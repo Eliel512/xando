@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 
-modules.exports = userId => {
+module.exports = userId => {
     // Utilisez uuidv4 pour générer un identifiant unique
     const uniqueId = uuidv4();
 

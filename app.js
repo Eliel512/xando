@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-// const path = require('path');
 const morgan = require("morgan");
 const compression = require('compression');
 const swaggerUi = require('swagger-ui-express');
@@ -14,8 +13,8 @@ const swaggerOptions = {
     definition: {
         openapi: '3.0.1',
         info: {
-            title: 'User API',
-            description: 'This API allows users to register, login, and authenticate using JWTs.',
+            title: 'Xando API',
+            description: 'This API enables developers to seamlessly integrate Xando\'s marketplace buying and selling functionalities into their own applications.',
             version: '0.1.0',
         },
     },
@@ -24,7 +23,7 @@ const swaggerOptions = {
 
 const swaggerDoc = swaggerJsdoc(swaggerOptions);
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 mongoose.connect(process.env.MONGODB_URI,
     {

@@ -167,6 +167,12 @@ router.get('/', auth, getOne);
  *                 type: string
  *                 format: email
  *                 description: The user email
+ *               gender:
+ *                 type: string
+ *                 description: The user gender ('M', 'F' or 'O')
+ *               accountType:
+ *                 type: string
+ *                 description: (Optional) The user account type ('buyer', 'seller')
  *               address:
  *                 type: object
  *                 properties:

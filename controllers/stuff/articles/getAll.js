@@ -1,7 +1,7 @@
 const Article = require('../../../models/article.model');
 const Category = require('../../../models/category.model');
 
-module.exports = async (res, res) => {
+module.exports = async (req, res) => {
   let category;
   if(req.query.category){
       try {
