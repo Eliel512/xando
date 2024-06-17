@@ -56,11 +56,8 @@ data/
 # Replicas directory
 all/
 
-# Statics files directories
-ressources/
-workspace/
-profils/
-salon/
+# Prive directory
+.private/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
