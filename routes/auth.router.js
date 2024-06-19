@@ -143,7 +143,7 @@ router.get('/', auth, getOne);
 /**
  * @swagger
  *
- *   /api/users/signup:
+ * /api/users/signup:
  *   post:
  *     operationId: createUser
  *     description: Create a new user
@@ -152,46 +152,92 @@ router.get('/', auth, getOne);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               firstName:
- *                 type: string
- *                 description: The user firstname
- *               middleName:
- *                 type: string
- *                 description: The user middle name
- *               lastName:
- *                 type: string
- *                 description: The user lastname
- *               email:
- *                 type: string
- *                 format: email
- *                 description: The user email
- *               gender:
- *                 type: string
- *                 description: The user gender ('M', 'F' or 'O')
- *               accountType:
- *                 type: string
- *                 description: (Optional) The user account type ('buyer', 'seller')
- *               address:
- *                 type: object
+ *             oneOf:
+ *               - type: object
+ *                 required:
+ *                   - email
+ *                   - tel
+ *                   - password
+ *                   - fname
+ *                   - lname
+ *                   - gender
+ *                   - accountType
  *                 properties:
- *                   city:
+ *                   email:
  *                     type: string
- *                     description: The user's city
- *                   municipality:
+ *                     format: email
+ *                     description: The user email
+ *                   tel:
  *                     type: string
- *                     description: The user's municipality
- *                   street:
+ *                     description: The user telephone number
+ *                   password:
  *                     type: string
- *                     description: The user's street
- *                   number:
+ *                     minLength: 8
+ *                     description: The user password
+ *                   fname:
  *                     type: string
- *                     description: The user's street number
- *               password:
- *                 type: string
- *                 description: The user password
- *
+ *                     minLength: 2
+ *                     description: The user first name
+ *                   mname:
+ *                     type: string
+ *                     minLength: 2
+ *                     description: The user middle name
+ *                   lname:
+ *                     type: string
+ *                     minLength: 2
+ *                     description: The user last name
+ *                   gender:
+ *                     type: string
+ *                     maxLength: 1
+ *                     description: The user gender ('M', 'F' or 'O')
+ *                   accountType:
+ *                     type: string
+ *                     enum: [buyer]
+ *                     description: The user account type (buyer)
+ *               - type: object
+ *                 required:
+ *                   - email
+ *                   - tel
+ *                   - password
+ *                   - name
+ *                   - address
+ *                   - accountType
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                     description: The user email
+ *                   tel:
+ *                     type: string
+ *                     description: The user telephone number
+ *                   password:
+ *                     type: string
+ *                     minLength: 8
+ *                     description: The user password
+ *                   name:
+ *                     type: string
+ *                     minLength: 2
+ *                     description: The shop's name
+ *                   address:
+ *                     type: object
+ *                     description: The shop's address
+ *                   properties:
+ *                     city:
+ *                       type: string
+ *                       description: The shop's city
+ *                     municipality:
+ *                       type: string
+ *                       description: The shop's municipality
+ *                     street:
+ *                       type: string
+ *                       description: The shop's street
+ *                     number:
+ *                       type: string
+ *                       description: The shop's street number
+ *                   accountType:
+ *                     type: string
+ *                     enum: [shop, realEstateAgency]
+ *                     description: The user account type (shop, realEstateAgency)
  *     responses:
  *       201:
  *         description: User was created successfully
@@ -201,17 +247,17 @@ router.get('/', auth, getOne);
  *               type: object
  *               properties:
  *                 _id:
- *                   type: objectid
+ *                   type: string
  *                   description: The user ID
  *                 firstName:
  *                   type: string
- *                   description: The user firstname
+ *                   description: The user first name
  *                 middleName:
  *                   type: string
  *                   description: The user middle name
  *                 lastName:
  *                   type: string
- *                   description: The user lastname
+ *                   description: The user last name
  *                 address:
  *                   type: object
  *                   properties:
@@ -234,29 +280,26 @@ router.get('/', auth, getOne);
  *                 token:
  *                   type: string
  *                   description: The JWT token
- * 
  *       400:
- *        description: The request body was invalid.
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                message:
- *                  type: string
- *                  description: A message describing the error.
- * 
+ *         description: The request body was invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A message describing the error.
  *       409:
- *        description: The email already exists.
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                message:
- *                  type: string
- *                  description: A message describing the error.
- * 
+ *         description: The email already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A message describing the error.
  *       500:
  *         description: Internal Server Error.
  *         content:

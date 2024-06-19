@@ -1,30 +1,56 @@
 const Joi = require('joi');
 const User = require('../../models/user.model');
 
-const signupSchema = Joi.object({
-    fname: Joi.string()
-        .min(2)
-        .required(),
-
-    lname: Joi.string()
-        .min(2)
-        .required(),
-
+const baseSchema = Joi.object({
     email: Joi.string()
         .required(),
     // .email({ minDomainSegments: 2, allowFullyQualified: true })
     // .min(5)
-
+    tel: Joi.string()
+        .required(),
     password: Joi.string()
         .min(8)
         .required()
 });
 
+const buyerSchema = baseSchema.keys({
+    fname: Joi.string()
+        .min(2)
+        .required(),
+    mname: Joi.string()
+        .min(2),    
+    lname: Joi.string()
+        .min(2)
+        .required(),
+    gender: Joi.string()
+        .max(1)
+        .required(),
+    accountType: Joi.string()
+        .valid('buyer')
+        .required()
+});
+
+const sellerSchema = baseSchema.keys({
+    name: Joi.string()
+        .min(2)
+        .required(),
+    accountType: Joi.string()
+        .valid('shop', 'realEstateAgency')
+        .required()
+});
+
+const signupSchema = Joi.alternatives().try(buyerSchema, sellerSchema);
+
 module.exports = (req, res, next) => {
     const { error, value } = signupSchema.validate({
+        name: req.body.name,
         fname: req.body.firstName,
+        mname: req.body.mname,
         lname: req.body.lastName,
+        gender: req.body.gender,
         email: req.body.email,
+        tel: req.body.tel,
+        accountType: req.body.accountType,
         password: req.body.password
     });
     if (error) {

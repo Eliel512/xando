@@ -17,45 +17,14 @@ const userSchema = new Schema({
         type: Date,
         required: false
     },
-    fname: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        required: [true, 'Le champ \'fname\' est requis.']
-    },
-    mname: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        required: false
-    },
-    lname: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        required: [true, 'Le champ \'lname\' est requis.']
-    },
-    gender: {
+    tel: {
         type: String,
         required: true,
-        enum: ['M', 'F', 'O']
-    },
-    address: {
-        city: {
-            type: String,
-            required: false
-        },
-        municipality: {
-            type: String,
-            required: false
-        },
-        street: {
-            type: String,
-            required: false
-        },
-        number: {
-            type: String,
-            require: false
+        validate: {
+            validator: function (v) {
+                return validator.isMobilePhone(v);
+            },
+            message: props => `${props.value} n'est pas un numéro de téléphone valide!`
         }
     },
     email: {
@@ -74,12 +43,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    accountType: {
-        type: String,
-        required: true,
-        enum: ['buyer', 'seller'],
-        default: 'buyer'
-    },
     favorites: [{
         type: Schema.Types.ObjectId,
         ref: 'article',
@@ -89,7 +52,7 @@ const userSchema = new Schema({
         type: String,
         required: false,
     }
-}, { timestamps: true });
+}, { timestamps: true, discriminatorKey: 'kind', collection: 'user' });
 
 userSchema.plugin(uniqueValidator);
 
