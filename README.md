@@ -60,23 +60,300 @@ Once the server is running, you can access the API endpoints. The API uses JWT f
 #### User Routes
 
 - **POST /api/users/signup**: Register a new user
+  - **Request Body**:
+    ```json
+    {
+      "email": "string",
+      "tel": "string",
+      "password": "string",
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "gender": "string",
+      "accountType": "string"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "_id": "string",
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "email": "string",
+      "tel": "string",
+      "token": "string"
+    }
+    ```
+  - **Errors**:
+    - `400`: Invalid request body.
+    - `409`: Email already exists.
+    - `500`: Internal Server Error.
+
 - **POST /api/users/signin**: Sign in an existing user
+  - **Request Body**:
+    ```json
+    {
+      "email": "string",
+      "password": "string"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "_id": "string",
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "email": "string",
+      "token": "string"
+    }
+    ```
+  - **Errors**:
+    - `404`: User not found.
+    - `400`: Incorrect password.
+    - `500`: Internal Server Error.
+
 - **POST /api/users**: Validate email or token
+  - **Request Body**:
+    ```json
+    {
+      "type": "string",
+      "email": "string",
+      "token": "string"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "found": "boolean"
+    }
+    ```
+  - **Errors**:
+    - `400`: Invalid request body.
+    - `404`: Invalid email or token.
+    - `500`: Internal Server Error.
+
 - **GET /api/users**: Authenticate user
+  - **Headers**:
+    ```
+    Authorization: Bearer <token>
+    ```
+  - **Response**:
+    ```json
+    {
+      "_id": "string",
+      "firstName": "string",
+      "middleName": "string",
+      "lastName": "string",
+      "email": "string",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+    ```
+  - **Errors**:
+    - `401`: Unauthorized.
+    - `500`: Internal Server Error.
+
 - **POST /api/users/edit**: Edit user details
+  - **Request Body**:
+    ```json
+    {
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "password": "string",
+      "file": "binary"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "_id": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "imageUrl": "string"
+    }
+    ```
+  - **Errors**:
+    - `400`: Invalid request body.
+    - `409`: Email already exists.
+    - `500`: Internal Server Error.
 
 #### Article Routes
 
 - **GET /api/stuff/articles**: Get all articles
+  - **Query Parameters**:
+    ```
+    category: string (optional)
+    seller: string (optional)
+    ```
+  - **Response**:
+    ```json
+    [
+      {
+        "_id": "string",
+        "name": "string",
+        "description": "string",
+        "price": "number",
+        "seller": {
+          "_id": "string",
+          "fname": "string",
+          "mname": "string",
+          "lname": "string"
+        },
+        "category": "string"
+      }
+    ]
+    ```
+  - **Errors**:
+    - `400`: Invalid request (malformed parameters).
+    - `500`: Internal Server Error.
+
 - **GET /api/stuff/articles/:id**: Get a specific article by ID
+  - **Response**:
+    ```json
+    {
+      "_id": "string",
+      "name": "string",
+      "description": "string",
+      "price": "number",
+      "seller": {
+        "_id": "string",
+        "fname": "string",
+        "mname": "string",
+        "lname": "string"
+      },
+      "category": "string"
+    }
+    ```
+  - **Errors**:
+    - `404`: Article not found.
+    - `500`: Internal Server Error.
+
 - **POST /api/stuff/articles**: Create a new article
+  - **Request Body** (multipart/form-data):
+    ```
+    {
+      "name": "string",
+      "description": "string",
+      "price": "number",
+      "stock": "integer",
+      "category": "string",
+      "files": ["binary"]
+    }
+    ```
+  - **Response**:
+    ```json
+    [
+      {
+        "_id": "string",
+        "name": "string",
+        "description": "string",
+        "price": "number",
+        "seller": {
+          "_id": "string",
+          "fname": "string",
+          "mname": "string",
+          "lname": "string"
+        },
+        "category": "string"
+      }
+    ]
+    ```
+  - **Errors**:
+    - `401`: Unauthorized.
+    - `500`: Internal Server Error.
+
 - **DELETE /api/stuff/articles/:id**: Delete an article
+  - **Response**:
+    ```json
+    [
+      {
+        "_id": "string",
+        "name": "string",
+        "description": "string",
+        "price": "number",
+        "seller": {
+          "_id": "string",
+          "fname": "string",
+          "mname": "string",
+          "lname": "string"
+        },
+        "category": "string"
+      }
+    ]
+    ```
+  - **Errors**:
+    - `400`: Invalid request (article not found or permission issue).
+    - `500`: Internal Server Error.
 
 #### Cart Routes
 
 - **GET /api/stuff/cart**: Get cart items
+  - **Response**:
+    ```json
+    {
+      "articles": [
+        {
+          "meta": {
+            "_id": "string",
+            "name": "string",
+            "price": "number"
+          },
+          "quantity": "number"
+        }
+      ]
+    }
+    ```
+  - **Errors**:
+    - `500`: Internal Server Error.
+
 - **POST /api/stuff/cart**: Add item to cart
+  - **Request Body**:
+    ```json
+    {
+      "article": "string",
+      "quantity": "number"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "articles": [
+        {
+          "meta": "string",
+          "quantity": "number"
+        }
+      ]
+    }
+    ```
+  - **Errors**:
+    - `404`: Article not found.
+    - `500`: Internal Server Error.
+
 - **DELETE /api/stuff/cart/:article**: Remove item from cart
+  - **Response**:
+    ```json
+    {
+      "articles": [
+        {
+          "meta": {
+            "_id": "string",
+            "name": "string",
+            "price": "number"
+          },
+          "quantity": "number"
+        }
+      ]
+    }
+    ```
+  - **Errors**:
+    - `404`: Article not found.
+    - `500`: Internal Server
+
+ Error.
 
 ## API Documentation
 

@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     try{
         article = await Article.findOne({ _id: req.body.article }, { _id: 1 });
         if(!article){
-            return res.status(400).json({ message: 'Article introuvable' });
+            return res.status(404).json({ message: 'Article introuvable' });
         }
     }catch(error){
         console.log(error);
