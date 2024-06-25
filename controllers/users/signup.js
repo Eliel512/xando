@@ -39,7 +39,7 @@ module.exports = (req, res, next) => {
 
             user.save()
                 .then(() => {
-                    res.status(200).json({
+                    res.status(201).json({
                         _id: user._id,
                         name: user.name,
                         firstName: user.fname,

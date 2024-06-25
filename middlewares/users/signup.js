@@ -42,8 +42,7 @@ const sellerSchema = baseSchema.keys({
 const signupSchema = Joi.alternatives().try(buyerSchema, sellerSchema);
 
 module.exports = (req, res, next) => {
-    const { error, value } = signupSchema.validate({
-        name: req.body.name,
+    const body = req.body.accountType == 'buyer' ? {
         fname: req.body.firstName,
         mname: req.body.mname,
         lname: req.body.lastName,
@@ -52,7 +51,14 @@ module.exports = (req, res, next) => {
         tel: req.body.tel,
         accountType: req.body.accountType,
         password: req.body.password
-    });
+    }:{
+        name: req.body.name,
+        email: req.body.email,
+        tel: req.body.tel,
+        accountType: req.body.accountType,
+        password: req.body.password
+    };
+    const { error, value } = signupSchema.validate(body);
     if (error) {
         console.log(error.details);
         return res.status(400).json(error.details);

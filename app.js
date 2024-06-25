@@ -47,9 +47,12 @@ app.use((req, res, next) => {
 app.use(morgan("tiny"));
 app.use(compression());
 
-// app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, 'dist')));
 app.use('/profils', express.static(path.join(__dirname, 'profils')));
 
 app.use('/api', appRoutes);
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/dist/index.html'));
+});
 
 module.exports = app;

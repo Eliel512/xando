@@ -25,7 +25,8 @@ const userSchema = new Schema({
                 return validator.isMobilePhone(v);
             },
             message: props => `${props.value} n'est pas un numéro de téléphone valide!`
-        }
+        },
+        unique: true
     },
     email: {
         type: String,
