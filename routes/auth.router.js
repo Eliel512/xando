@@ -12,6 +12,7 @@ const signin = require('../controllers/users/signin');
 const check = require('../controllers/users/check');
 const getOne = require('../controllers/users/getOne');
 const edit = require('../controllers/users/edit');
+const validate = require('../controllers/users/validate');
 
 /**
  * @swagger
@@ -474,5 +475,78 @@ router.post('/signin', signinMiddleware, signin);
  *                   description: A message describing the error.
  */
 router.post('/edit', auth, multer, editMiddleware, edit);
+
+/**
+ * @swagger
+ * /validate:
+ *   post:
+ *     summary: Validate user by updating their status.
+ *     description: Validate the user by updating their `isValid` status if the provided token is correct.
+ *     tags: 
+ *       - Users
+ *     parameters:
+ *       - in: body
+ *         name: token
+ *         description: The token of the user to be validated.
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             token:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: User successfully validated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 isValid:
+ *                   type: boolean
+ *                 firstName:
+ *                   type: string
+ *                 lastName:
+ *                   type: string
+ *                 gender:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 address:
+ *                   type: string
+ *                 accountType:
+ *                   type: string
+ *                 favorites:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 imageUrl:
+ *                   type: string
+ *                 token:
+ *                   type: string
+ *       400:
+ *         description: Invalid token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid token
+ *       500:
+ *         description: An error occurred.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: An error occurred
+ */
+router.post('/validate', auth, validate);
 
 module.exports = router;

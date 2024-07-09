@@ -114,6 +114,33 @@ Once the server is running, you can access the API endpoints. The API uses JWT f
     - `400`: Incorrect password.
     - `500`: Internal Server Error.
 
+- **POST /api/users/validate**: Validate user by updating their status
+  - **Request Body**:
+    ```json
+    {
+      "token": "string"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "_id": "string",
+      "isValid": true,
+      "firstName": "string",
+      "lastName": "string",
+      "gender": "string",
+      "email": "string",
+      "address": "string",
+      "accountType": "string",
+      "favorites": ["string"],
+      "imageUrl": "string",
+      "token": "string"
+    }
+    ```
+  - **Errors**:
+    - `400`: Invalid token.
+    - `500`: An error occurred.
+
 - **POST /api/users**: Validate email or token
   - **Request Body**:
     ```json

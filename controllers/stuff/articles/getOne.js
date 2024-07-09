@@ -4,7 +4,7 @@ module.exports = (req, res) => {
     Article.findOne({ _id: req.params.id }, { __v: 0 })
         .populate({
             path: 'seller',
-            select: '_id fname mname lname'
+            select: '_id name accountType address'
         })
         .exec()
         .then(article => {

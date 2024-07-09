@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     Article.find(query, { __v: 0 })
         .populate({
           path: 'seller',
-          select: '_id fname mname lname'
+          select: '_id name accountType address'
         })
         .exec()
         .then(articles => res.status(200).json(articles))

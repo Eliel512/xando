@@ -21,6 +21,7 @@ module.exports = (req, res) => {
         .then(user => {
             res.status(200).json({
                 _id: user._id,
+                isValid: user.isValid,
                 firstName: user.fname,
                 lastName: user.lname,
                 middleName: user.mname,

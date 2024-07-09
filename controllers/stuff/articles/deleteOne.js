@@ -19,7 +19,7 @@ module.exports = (req, res) => {
             Article.find({ seller: res.locals.userId }, { __v: 0 })
                 .populate({
                     path: 'seller',
-                    select: '_id fname mname'
+                    select: '_id nsme accountType address'
                 })
                 .exec()
                 .then(articles => res.status(200).json(articles))

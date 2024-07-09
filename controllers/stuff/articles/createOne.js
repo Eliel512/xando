@@ -1,8 +1,9 @@
 const Article = require('../../../models/article.model');
-const User = require('../../../models/user.model');
+// const User = require('../../../models/user.model');
+const Seller = require('../../../models/seller.model');
 
 module.exports = (req, res) => {
-    User.findOne({ _id: res.locals.userId, isValid: true, accountType: 'seller' })
+    Seller.findOne({ _id: res.locals.userId, isValid: true/*, kind: 'seller' */})
         .then(user => {
             if(!user){
                 return res.status(401).json({ message: 'Operation impossible' });
@@ -22,7 +23,7 @@ module.exports = (req, res) => {
                     Article.find({ seller: res.locals.userId }, { __v: 0 })
                         .populate({
                             path: 'seller',
-                            select: '_id fname mname lname'
+                            select: '_id name accountType address'
                         })
                         .exec()
                         .then(articles => res.status(201).json(articles))

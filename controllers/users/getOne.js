@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
                 _id: user._id,
                 name: user.name,
                 tel: user.tel,
+                isValid: user.isValid,
                 firstName: user.fname,
                 lastName: user.lname,
                 middleName: user.mname,
