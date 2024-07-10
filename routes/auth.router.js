@@ -480,54 +480,70 @@ router.post('/edit', auth, multer, editMiddleware, edit);
  * @swagger
  * /validate:
  *   post:
- *     summary: Validate user by updating their status.
- *     description: Validate the user by updating their `isValid` status if the provided token is correct.
+ *     summary: Validate user or retrieve the token and send an email.
+ *     description: |
+ *       This endpoint allows the user to either validate their account or retrieve their validation token.
+ *       - If the action is 'validate' and the provided token is correct, the user's `isValid` status will be updated.
+ *       - If the action is 'get', the token will be sent to the user's email address.
  *     tags: 
  *       - Users
- *     parameters:
- *       - in: body
- *         name: token
- *         description: The token of the user to be validated.
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             token:
- *               type: string
+ *     requestBody:
+ *       description: Action to perform and token if action is 'validate'.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               action:
+ *                 type: string
+ *                 description: The action to perform ('validate' or 'get').
+ *                 example: validate
+ *               token:
+ *                 type: string
+ *                 description: The token of the user to be validated. Required if action is 'validate'.
  *     responses:
  *       200:
- *         description: User successfully validated.
+ *         description: Successful response based on the action.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 _id:
- *                   type: string
- *                 isValid:
- *                   type: boolean
- *                 firstName:
- *                   type: string
- *                 lastName:
- *                   type: string
- *                 gender:
- *                   type: string
- *                 email:
- *                   type: string
- *                 address:
- *                   type: string
- *                 accountType:
- *                   type: string
- *                 favorites:
- *                   type: array
- *                   items:
- *                     type: string
- *                 imageUrl:
- *                   type: string
- *                 token:
- *                   type: string
+ *               oneOf:
+ *                 - type: object
+ *                   description: Response when action is 'validate'
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                     isValid:
+ *                       type: boolean
+ *                     firstName:
+ *                       type: string
+ *                     lastName:
+ *                       type: string
+ *                     gender:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     address:
+ *                       type: string
+ *                     accountType:
+ *                       type: string
+ *                     favorites:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     imageUrl:
+ *                       type: string
+ *                     token:
+ *                       type: string
+ *                 - type: object
+ *                   description: Response when action is 'get'
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: E-mail envoyé avec succès
  *       400:
- *         description: Invalid token.
+ *         description: Invalid token or unknown action.
  *         content:
  *           application/json:
  *             schema:
