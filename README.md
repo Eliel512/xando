@@ -114,32 +114,63 @@ Once the server is running, you can access the API endpoints. The API uses JWT f
     - `400`: Incorrect password.
     - `500`: Internal Server Error.
 
-- **POST /api/users/validate**: Validate user by updating their status
+- **POST /api/users/validate**: Validate user by updating their status or retrieve the token and send an email
   - **Request Body**:
     ```json
     {
-      "token": "string"
+      "action": "string",  // either "validate" or "get"
+      "token": "string"    // required if action is "validate"
     }
     ```
-  - **Response**:
-    ```json
-    {
-      "_id": "string",
-      "isValid": true,
-      "firstName": "string",
-      "lastName": "string",
-      "gender": "string",
-      "email": "string",
-      "address": "string",
-      "accountType": "string",
-      "favorites": ["string"],
-      "imageUrl": "string",
-      "token": "string"
-    }
-    ```
-  - **Errors**:
-    - `400`: Invalid token.
-    - `500`: An error occurred.
+  - **Responses**:
+    - **Validate Action**:
+      - **200**: User successfully validated.
+        ```json
+        {
+          "_id": "string",
+          "isValid": true,
+          "firstName": "string",
+          "lastName": "string",
+          "gender": "string",
+          "email": "string",
+          "address": "string",
+          "accountType": "string",
+          "favorites": ["string"],
+          "imageUrl": "string",
+          "token": "string"
+        }
+        ```
+      - **400**: Invalid token.
+        ```json
+        {
+          "message": "Invalid token"
+        }
+        ```
+      - **500**: An error occurred.
+        ```json
+        {
+          "message": "An error occurred"
+        }
+        ```
+    - **Get Action**:
+      - **200**: Email sent successfully.
+        ```json
+        {
+          "message": "E-mail envoyé avec succès"
+        }
+        ```
+      - **400**: Unknown action.
+        ```json
+        {
+          "message": "Action inconnue"
+        }
+        ```
+      - **500**: An error occurred.
+        ```json
+        {
+          "message": "Une erreur est survenue"
+        }
+        ```
 
 - **POST /api/users**: Validate email or token
   - **Request Body**:
