@@ -8,6 +8,7 @@ const createOne = require('../controllers/stuff/articles/createOne');
 const deleteOne = require('../controllers/stuff/articles/deleteOne');
 
 const multer = require('../middlewares/articles/createOne');
+const getCategory = require('../middlewares/articles/getCategory');
 const auth = require('../middlewares/users/auth');
 
 /**
@@ -164,7 +165,7 @@ router.get('/:id', getOne);
  *       500:
  *         description: An internal error occurred.
  */
-router.post('/', auth, multer, createOne);
+router.post('/', auth, multer, getCategory, createOne);
 
 /**
  * @swagger

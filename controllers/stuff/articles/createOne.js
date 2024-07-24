@@ -8,7 +8,7 @@ module.exports = (req, res) => {
             if(!user){
                 return res.status(401).json({ message: 'Operation impossible' });
             }
-            const imagesPath = req.files.map(file => file.path);
+            const imagesPath = req.files.map(file => file.path.split('/xando')[1]);
             const article = new Article({
                 name: req.body.name,
                 description: req.body.description,

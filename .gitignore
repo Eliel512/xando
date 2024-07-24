@@ -53,6 +53,10 @@ jspm_packages/
 # Database directory
 data/
 
+# Statics files
+articles/
+profils/
+
 # Replicas directory
 all/
 

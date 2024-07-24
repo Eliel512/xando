@@ -49,6 +49,7 @@ app.use(compression());
 
 app.use('/', express.static(path.join(__dirname, 'dist')));
 app.use('/profils', express.static(path.join(__dirname, 'profils')));
+app.use('/articles', express.static(path.join(__dirname, 'articles')));
 
 app.use('/api', appRoutes);
 app.get('*', (req, res) => {
