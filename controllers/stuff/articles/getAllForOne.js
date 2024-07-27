@@ -15,6 +15,15 @@ module.exports = async (req, res) => {
     const query = req.query.category ? { category: category, seller: req.params.id } :
         { seller: req.params.id };
     Article.find(query, { __v: 0 })
+        .populate({
+            path: 'seller',
+            select: '_id name accountType address'
+        })
+        .populate({
+            path: 'category',
+            select: '_id name description'
+        })
+        .exec()
         .then(articles => res.status(200).json(articles))
         .catch(error => {
             console.log(error);

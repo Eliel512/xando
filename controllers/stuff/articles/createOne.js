@@ -25,6 +25,10 @@ module.exports = (req, res) => {
                             path: 'seller',
                             select: '_id name accountType address'
                         })
+                        .populate({
+                            path: 'category',
+                            select: '_id name description'
+                        })
                         .exec()
                         .then(articles => res.status(201).json(articles))
                         .catch(error => {
