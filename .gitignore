@@ -51,7 +51,7 @@ node_modules/
 jspm_packages/
 
 # Database directory
-data/
+db/
 
 # Statics files
 articles/
