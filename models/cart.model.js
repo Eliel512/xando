@@ -20,6 +20,10 @@ const cartSchema = new Schema({
     active: {
         type: Boolean,
         default: true
+    },
+    isValid: {
+        type: Boolean,
+        default: false
     }
 
 }, { timestamps: true });

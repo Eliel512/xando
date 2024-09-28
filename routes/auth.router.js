@@ -6,13 +6,20 @@ const signupMiddleware = require('../middlewares/users/signup');
 const editMiddleware = require('../middlewares/users/edit');
 const multer = require('../middlewares/users/profil.multer');
 const auth = require('../middlewares/users/auth');
+const isAdmin = require('../middlewares/users/isAdmin');
 
 const signup = require('../controllers/users/signup');
 const signin = require('../controllers/users/signin');
 const check = require('../controllers/users/check');
 const getOne = require('../controllers/users/getOne');
+const getAll = require('../controllers/users/getAll');
+const getAllByType = require('../controllers/users/getAllByType');
+const getFeatured = require('../controllers/users/getFeatured.seller');
+const updateFeatured = require('../controllers/users/updateFeatured.seller');
 const edit = require('../controllers/users/edit');
 const validate = require('../controllers/users/validate');
+const resetPass = require('../controllers/users/resetPass');
+const getResetPass = require('../controllers/users/getResetPassToken');
 
 /**
  * @swagger
@@ -564,5 +571,11 @@ router.post('/edit', auth, multer, editMiddleware, edit);
  *                   example: An error occurred
  */
 router.post('/validate', auth, validate);
+router.get('/reset', getResetPass);
+router.post('/reset', resetPass);
+router.get('/all', auth, isAdmin, getAll);
+router.get('/type', auth, isAdmin, getAllByType);
+router.get('/featureds', getFeatured);
+router.post('/featureds', auth, isAdmin, updateFeatured);
 
 module.exports = router;

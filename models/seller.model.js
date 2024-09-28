@@ -24,6 +24,11 @@ const sellerSchema = new Schema({
             require: false
         }
     },
+    isFeatured: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     accountType: {
         type: String,
         required: true,

@@ -9,6 +9,11 @@ const userSchema = new Schema({
         required: [true, 'Le champ \'isValid\' est requis.'],
         default: false
     },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     token: {
         type: String,
         required: false
