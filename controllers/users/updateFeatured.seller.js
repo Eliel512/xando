@@ -1,6 +1,6 @@
 const Seller = require('../../models/seller.model');
 
-module.exports = (res, res) => {
+module.exports = (req, res) => {
     Seller.findById(req.query.seller)
         .then(shop => {
             shop.isFeatured = !shop.isFeatured;
