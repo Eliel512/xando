@@ -4,8 +4,8 @@ const User = require('../../models/user.model');
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    port: 465,
+    secure: true, // true for 465, false for other ports
     auth: {
         user: process.env.EMAIL_ADDR, // your email address
         pass: process.env.EMAIL_PASS   // your email password
@@ -22,7 +22,11 @@ module.exports = async (req, res) => {
         }
 
         // Génération d'un token de réinitialisation valide pour 1 heure
-        const resetToken = jwt.sign({ userId: user._id }, process.env.RESET_PASS_KEY, { expiresIn: '1h' });
+        const resetToken = jwt.sign(
+            { userId: user._id },
+            process.env.RESET_PASS_KEY,
+            { expiresIn: '1h' }
+        );
 
         // Stockage du token et de son expiration dans la base de données
         user.resetToken = {
@@ -40,12 +44,13 @@ module.exports = async (req, res) => {
             from: `"Xando Team" <${process.env.EMAIL_ADDR}>`,
             subject: 'Réinitialisation de mot de passe',
             html: `<p>Vous avez demandé une réinitialisation de mot de passe.</p>
-                   <p>Cliquez sur ce <a href="${resetURL}">lien</a> pour réinitialiser votre mot de passe.</p>`
+                   <p>Ouvrez sur ce <a href="${resetURL}">lien: ${resetURL}</a> pour réinitialiser votre mot de passe.</p>`
         });
 
         res.status(200).json({ message: 'E-mail de réinitialisation envoyé' });
 
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Erreur interne du serveur', error });
     }
 };
